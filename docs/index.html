@@ -19,6 +19,9 @@
                 <a href="#overview">Overview</a>
                 <a href="#leaderboard">Leaderboard</a>
                 <a href="#visualizations">Results</a>
+                <a href="game.html" class="game-link">
+                    <i class="fas fa-brain"></i> Human vs. AI Challenge
+                </a>
                 <a href="#experiments">Experiments</a>
                 <a href="#examples">Examples</a>
                 <a href="#citation">Citation</a>
@@ -32,11 +35,12 @@
     <header class="hero">
         <div class="container hero-container">
             <div class="hero-content">
-                <h1><i class="fas fa-headphones"></i> LISTEN</h1>
-                <p class="subtitle">Lexical vs. Acoustic Emotion Benchmark</p>
+                <h1>Do Audio LLMs <span class="flip-words"><span class="flip-word">LISTEN</span><span
+                            class="flip-word">Transcribe</span></span>?</h1>
+                <p class="subtitle">Measuring Lexical vs. Acoustic Emotion Cues Reliance in Audio LLMs</p>
                 <p class="description">
-                    A comprehensive benchmark for evaluating audio language models' ability to distinguish
-                    between lexical (text-based) and acoustic (prosody-based) emotional cues in speech
+                    A comprehensive benchmark revealing that most audio-language models over-rely on text and miss
+                    critical prosodic cues—especially when words and tone conflict.
                 </p>
                 <div class="hero-buttons">
                     <a href="https://github.com/DeliJingyiC/LISTEN" class="btn btn-primary" target="_blank">
@@ -91,6 +95,47 @@
                         <h3>Paralinguistic</h3>
                         <p>Non-verbal vocalizations without lexical content</p>
                         <span class="badge">1 variant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="game-featured" class="section-featured">
+        <div class="container">
+            <div class="featured-game">
+                <div class="featured-game-content">
+                    <div class="featured-tag">🎮 Interactive Challenge</div>
+                    <h2>Can You Beat the AI?</h2>
+                    <p>Test your emotional intelligence against leading audio LLMs. Identify true emotions when words
+                        and tone conflict—see if you rely more on text or prosody.</p>
+                    <div class="featured-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Challenges</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">AI Models</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2min</div>
+                            <div class="stat-label">Duration</div>
+                        </div>
+                    </div>
+                    <a href="game.html" class="btn-game-featured">
+                        <i class="fas fa-brain"></i> Take the Challenge
+                    </a>
+                </div>
+                <div class="featured-game-visual">
+                    <div class="game-preview">
+                        <div class="preview-icon">🎧</div>
+                        <div class="preview-text">"I'm so happy right now!"</div>
+                        <div class="preview-cues">
+                            <div class="preview-cue lexical">Words: Happy</div>
+                            <div class="preview-cue acoustic">Tone: Sad</div>
+                        </div>
+                        <div class="preview-question">What's the real emotion?</div>
                     </div>
                 </div>
             </div>
@@ -183,15 +228,18 @@
 
             <div class="visualization-single">
                 <div class="viz-card-large">
-                    <img src="hero_radar.png"
-                        alt="Detailed radar chart showing model performance across all modalities" class="viz-image-large">
-                    <p class="viz-caption">Comprehensive comparison of model performance across seven modalities: Neutral-Text (Text/Audio), Emotion-Matched (Text/Audio), Emotion-Mismatched (Text/Audio), and Paralinguistic (Audio). Gemini 2.5 Pro demonstrates the most balanced performance, while Qwen3-Omni-30B excels in Emotion-Matched conditions.</p>
+                    <img src="hero_radar.png" alt="Detailed radar chart showing model performance across all modalities"
+                        class="viz-image-large">
+                    <p class="viz-caption">Comprehensive comparison of model performance across seven modalities:
+                        Neutral-Text (Text/Audio), Emotion-Matched (Text/Audio), Emotion-Mismatched (Text/Audio), and
+                        Paralinguistic (Audio). Gemini 2.5 Pro demonstrates the most balanced performance, while
+                        Qwen3-Omni-30B excels in Emotion-Matched conditions.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    
+
 
     <section id="experiments" class="section">
         <div class="container">

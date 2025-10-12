@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human vs. AI: The Emotion Challenge | LISTEN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Intro Screen */
+        .intro-screen {
+            text-align: center;
+            color: white;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .logo-container {
+            margin: 3rem 0;
+        }
+
+        .audio-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            backdrop-filter: blur(10px);
+            animation: pulse 2s infinite;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .audio-icon i {
+            font-size: 3.5rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fbbf24;
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1e293b;
+            font-size: 1.3rem;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 3rem;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(251, 191, 36, 0.6);
+        }
+
+        /* Game Screen */
+        .game-screen {
+            display: none;
+        }
+
+        .game-screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            height: 100%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.8);
+        }
+
+        .round-info {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .round-number {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .scenario-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .audio-placeholder {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .audio-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+
+        .scenario-text {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .cue-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .cue-box {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .lexical-cue {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .acoustic-cue {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .cue-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .cue-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin: 2rem 0 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .emotion-button {
+            background: #f1f5f9;
+            border: 3px solid transparent;
+            padding: 1.2rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .emotion-button:hover {
+            background: #e2e8f0;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .emotion-button.selected {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+
+        /* AI Response */
+        .ai-response {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 1rem;
+        }
+
+        .ai-response.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        .ai-header {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-prediction {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid #94a3b8;
+        }
+
+        .ai-prediction.correct {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .ai-prediction.incorrect {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .ai-name {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-guess {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+
+        .correct-answer {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .correct-answer-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .correct-answer-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .insight-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .insight-box i {
+            color: #2563eb;
+            margin-right: 0.5rem;
+        }
+
+        .next-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 2rem auto 0;
+            transition: all 0.3s ease;
+        }
+
+        .next-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            color: white;
+            text-align: center;
+        }
+
+        .results-screen.active {
+            display: block;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .trophy-icon {
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .trophy-icon i {
+            font-size: 4rem;
+            color: #fbbf24;
+        }
+
+        .results-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .score-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .score-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .score-card.winner {
+            border: 2px solid #fbbf24;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.5);
+        }
+
+        .score-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .profile-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-bars {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .profile-bar {
+            margin-bottom: 1.5rem;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .bar-container {
+            background: rgba(255, 255, 255, 0.2);
+            height: 40px;
+            border-radius: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 2rem;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .bar-fill.lexical {
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+        }
+
+        .bar-fill.acoustic {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .profile-verdict {
+            background: rgba(251, 191, 36, 0.2);
+            border: 2px solid #fbbf24;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .research-cta {
+            background: white;
+            color: #1e293b;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .research-cta h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .research-cta p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-secondary {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .cta-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .restart-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 1rem 2.5rem;
+            border-radius: 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .restart-button:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.3rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .emotion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .score-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- Intro Screen -->
+        <div class="intro-screen active" id="introScreen">
+            <div class="logo-container">
+                <div class="audio-icon">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <h1>Human vs. AI</h1>
+                <p class="subtitle">The Emotion Challenge</p>
+            </div>
+
+            <p class="intro-text">
+                Can you tell when someone's words don't match their tone?
+                Test your emotional intelligence against leading Audio LLMs!
+            </p>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>Test Your Skills</h3>
+                    <p>Identify true emotions from conflicting cues</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>Beat the AI</h3>
+                    <p>Compete against GPT-4, Gemini, and Qwen</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Discover Your Profile</h3>
+                    <p>Are you more lexical or acoustic?</p>
+                </div>
+            </div>
+
+            <button class="start-button" onclick="startGame()">
+                Start Challenge <i class="fas fa-play"></i>
+            </button>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="game-screen" id="gameScreen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div class="round-info">
+                <div class="round-number" id="roundNumber">Round 1 of 5</div>
+            </div>
+
+            <div class="scenario-card">
+                <div class="scenario-header">
+                    <div class="audio-placeholder">
+                        <i class="fas fa-volume-up"></i>
+                        <div>Listen to the audio clip</div>
+                        <small>(Audio simulation)</small>
+                    </div>
+                    <p class="scenario-text" id="scenarioText">"I'm so happy right now!"</p>
+
+                    <div class="cue-info">
+                        <div class="cue-box lexical-cue">
+                            <div class="cue-label">Words Say</div>
+                            <div class="cue-value" id="lexicalCue">Happy</div>
+                        </div>
+                        <div class="cue-box acoustic-cue">
+                            <div class="cue-label">Voice Sounds</div>
+                            <div class="cue-value" id="acousticCue">Sad/Defeated</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="question">What emotion is the speaker REALLY feeling?</p>
+
+                <div class="emotion-grid" id="emotionGrid">
+                    <!-- Emotions will be populated by JS -->
+                </div>
+
+                <div class="ai-response" id="aiResponse">
+                    <h3 class="ai-header">How did the AI models respond?</h3>
+
+                    <div class="correct-answer">
+                        <div class="correct-answer-label">Correct Answer</div>
+                        <div class="correct-answer-value" id="correctEmotion">Sad</div>
+                    </div>
+
+                    <div class="ai-grid" id="aiGrid">
+                        <!-- AI predictions will be populated by JS -->
+                    </div>
+
+                    <div class="insight-box" id="insightBox">
+                        <i class="fas fa-lightbulb"></i>
+                        <strong>Insight:</strong> <span id="insightText"></span>
+                    </div>
+
+                    <button class="next-button" onclick="nextRound()">
+                        Next Round <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div class="results-screen" id="resultsScreen">
+            <div class="trophy-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="results-title">Challenge Complete!</h2>
+
+            <div class="score-summary" id="scoreSummary">
+                <!-- Scores will be populated by JS -->
+            </div>
+
+            <div class="profile-section">
+                <h3 class="profile-title">Your Emotion Processing Profile</h3>
+                <div class="profile-bars">
+                    <div class="profile-bar">
+                        <div class="bar-label">
+                            <span>📝 Lexical (Words)</span>
+                            <span id="lexicalPercent">0%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill lexical" id="lexicalBar"></div>
+                        </div>
+                    </div>
+                    <div class="profile-bar">
+                        <div class="bar-label">
+                            <span>🎵 Acoustic (Tone)</span>
+                            <span id="acousticPercent">0%</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill acoustic" id="acousticBar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-verdict" id="profileVerdict">
+                    <!-- Verdict will be populated by JS -->
+                </div>
+            </div>
+
+            <div class="research-cta">
+                <h3>🔬 The Research Behind This Game</h3>
+                <p>This challenge is based on the LISTEN benchmark, which reveals that most Audio LLMs over-rely on
+                    lexical cues and struggle with acoustic emotion recognition—especially when cues conflict.</p>
+                <div class="cta-buttons">
+                    <a href="https://github.com/DeliJingyiC/LISTEN" class="cta-button cta-primary">
+                        <i class="fab fa-github"></i> View Research
+                    </a>
+                    <a href="index.html#leaderboard" class="cta-button cta-secondary">
+                        <i class="fas fa-chart-bar"></i> See Full Leaderboard
+                    </a>
+                </div>
+            </div>
+
+            <button class="restart-button" onclick="restartGame()">
+                <i class="fas fa-redo"></i> Play Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const scenarios = [
+            {
+                text: "I'm so happy right now!",
+                lexical: "happy",
+                acoustic: "sad/defeated",
+                correct: "sad",
+                emotions: ["happy", "sad", "angry", "excited", "calm", "frustrated"],
+                aiPredictions: {
+                    "GPT-4o": { guess: "happy", correct: false, relied: "lexical" },
+                    "Gemini 2.5": { guess: "happy", correct: false, relied: "lexical" },
+                    "Qwen-Omni": { guess: "sad", correct: true, relied: "acoustic" }
+                },
+                insight: "Most AI models got fooled by the happy words and missed the sad tone. Only Qwen-Omni caught the acoustic cues!"
+            },
+            {
+                text: "This is absolutely terrible...",
+                lexical: "negative",
+                acoustic: "excited/energetic",
+                correct: "excited",
+                emotions: ["negative", "excited", "angry", "sad", "happy", "calm"],
+                aiPredictions: {
+                    "GPT-4o": { guess: "negative", correct: false, relied: "lexical" },
+                    "Gemini 2.5": { guess: "negative", correct: false, relied: "lexical" },
+                    "Qwen-Omni": { guess: "excited", correct: true, relied: "acoustic" }
+                },
+                insight: "This is sarcasm! The speaker is actually excited about something 'terrible' (probably great). Most AIs missed the playful tone."
+            },
+            {
+                text: "I'm scared...",
+                lexical: "fear",
+                acoustic: "calm/confident",
+                correct: "calm",
+                emotions: ["fear", "calm", "sad", "angry", "excited", "happy"],
+                aiPredictions: {
+                    "GPT-4o": { guess: "fear", correct: false, relied: "lexical" },
+                    "Gemini 2.5": { guess: "fear", correct: false, relied: "lexical" },
+                    "Qwen-Omni": { guess: "calm", correct: true, relied: "acoustic" }
+                },
+                insight: "The speaker is recounting a past fear calmly. The confident tone reveals they're no longer scared—but AI models fixated on the word 'scared'."
+            },
+            {
+                text: "That's just perfect.",
+                lexical: "positive",
+                acoustic: "frustrated/angry",
+                correct: "frustrated",
+                emotions: ["positive", "frustrated", "angry", "sad", "happy", "calm"],
+                aiPredictions: {
+                    "GPT-4o": { guess: "positive", correct: false, relied: "lexical" },
+                    "Gemini 2.5": { guess: "positive", correct: false, relied: "lexical" },
+                    "Qwen-Omni": { guess: "frustrated", correct: true, relied: "acoustic" }
+                },
+                insight: "Classic sarcasm! 'Perfect' said with frustration means the opposite. Humans catch this instantly, but most AIs struggle."
+            },
+            {
+                text: "I love this so much!",
+                lexical: "love",
+                acoustic: "angry/irritated",
+                correct: "angry",
+                emotions: ["love", "angry", "frustrated", "sad", "happy", "excited"],
+                aiPredictions: {
+                    "GPT-4o": { guess: "love", correct: false, relied: "lexical" },
+                    "Gemini 2.5": { guess: "love", correct: false, relied: "lexical" },
+                    "Qwen-Omni": { guess: "angry", correct: true, relied: "acoustic" }
+                },
+                insight: "The angriest 'love' you'll ever hear! This shows how tone can completely flip the meaning of words."
+            }
+        ];
+
+        let currentRound = 0;
+        let userGuesses = [];
+        let scores = { user: 0, "GPT-4o": 0, "Gemini 2.5": 0, "Qwen-Omni": 0 };
+
+        function startGame() {
+            document.getElementById('introScreen').classList.remove('active');
+            document.getElementById('gameScreen').classList.add('active');
+            loadScenario();
+        }
+
+        function loadScenario() {
+            const scenario = scenarios[currentRound];
+
+            // Update progress
+            const progress = ((currentRound + 1) / scenarios.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('roundNumber').textContent = `Round ${currentRound + 1} of ${scenarios.length}`;
+
+            // Update scenario content
+            document.getElementById('scenarioText').textContent = `"${scenario.text}"`;
+            document.getElementById('lexicalCue').textContent = scenario.lexical.charAt(0).toUpperCase() + scenario.lexical.slice(1);
+            document.getElementById('acousticCue').textContent = scenario.acoustic.charAt(0).toUpperCase() + scenario.acoustic.slice(1);
+
+            // Load emotion buttons
+            const emotionGrid = document.getElementById('emotionGrid');
+            emotionGrid.innerHTML = '';
+            scenario.emotions.forEach(emotion => {
+                const button = document.createElement('button');
+                button.className = 'emotion-button';
+                button.textContent = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+                button.onclick = () => selectEmotion(emotion, button);
+                emotionGrid.appendChild(button);
+            });
+
+            // Hide AI response
+            document.getElementById('aiResponse').classList.remove('show');
+        }
+
+        function selectEmotion(emotion, button) {
+            // Remove previous selections
+            document.querySelectorAll('.emotion-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Select this button
+            button.classList.add('selected');
+
+            // Record guess
+            const scenario = scenarios[currentRound];
+            const isCorrect = emotion === scenario.correct;
+
+            userGuesses.push({
+                round: currentRound,
+                guess: emotion,
+                correct: isCorrect,
+                reliedOn: emotion === scenario.lexical ? 'lexical' : 'acoustic'
+            });
+
+            // Update scores
+            if (isCorrect) scores.user++;
+            Object.keys(scenario.aiPredictions).forEach(model => {
+                if (scenario.aiPredictions[model].correct) {
+                    scores[model]++;
+                }
+            });
+
+            // Show AI response
+            showAIResponse(scenario);
+        }
+
+        function showAIResponse(scenario) {
+            // Update correct answer
+            document.getElementById('correctEmotion').textContent =
+                scenario.correct.charAt(0).toUpperCase() + scenario.correct.slice(1);
+
+            // Update AI predictions
+            const aiGrid = document.getElementById('aiGrid');
+            aiGrid.innerHTML = '';
+
+            Object.keys(scenario.aiPredictions).forEach(model => {
+                const prediction = scenario.aiPredictions[model];
+                const div = document.createElement('div');
+                div.className = `ai-prediction ${prediction.correct ? 'correct' : 'incorrect'}`;
+                div.innerHTML = `
+                    <div class="ai-name">
+                        <i class="fas fa-robot"></i>
+                        ${model}
+                        ${prediction.correct ? '<i class="fas fa-check-circle" style="color: #10b981;"></i>' : '<i class="fas fa-times-circle" style="color: #ef4444;"></i>'}
+                    </div>
+                    <div class="ai-guess">
+                        Guessed: ${prediction.guess.charAt(0).toUpperCase() + prediction.guess.slice(1)}
+                        <br>
+                        <small style="opacity: 0.7;">Relied on: ${prediction.relied}</small>
+                    </div>
+                `;
+                aiGrid.appendChild(div);
+            });
+
+            // Update insight
+            document.getElementById('insightText').textContent = scenario.insight;
+
+            // Show response
+            document.getElementById('aiResponse').classList.add('show');
+        }
+
+        function nextRound() {
+            currentRound++;
+            if (currentRound < scenarios.length) {
+                loadScenario();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('gameScreen').classList.remove('active');
+            document.getElementById('resultsScreen').classList.add('active');
+
+            // Calculate profile
+            const lexicalCount = userGuesses.filter(g => g.reliedOn === 'lexical').length;
+            const acousticCount = userGuesses.filter(g => g.reliedOn === 'acoustic').length;
+            const lexicalPercent = Math.round((lexicalCount / userGuesses.length) * 100);
+            const acousticPercent = Math.round((acousticCount / userGuesses.length) * 100);
+
+            // Update scores
+            const scoreSummary = document.getElementById('scoreSummary');
+            scoreSummary.innerHTML = '';
+
+            // Sort scores
+            const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+            sortedScores.forEach(([name, score]) => {
+                const div = document.createElement('div');
+                div.className = 'score-card';
+                if (score === Math.max(...Object.values(scores))) {
+                    div.classList.add('winner');
+                }
+                div.innerHTML = `
+                    <div class="score-label">${name === 'user' ? '👤 You' : '🤖 ' + name}</div>
+                    <div class="score-value">${score}/${scenarios.length}</div>
+                `;
+                scoreSummary.appendChild(div);
+            });
+
+            // Update profile bars with animation
+            setTimeout(() => {
+                document.getElementById('lexicalBar').style.width = lexicalPercent + '%';
+                document.getElementById('acousticBar').style.width = acousticPercent + '%';
+                document.getElementById('lexicalPercent').textContent = lexicalPercent + '%';
+                document.getElementById('acousticPercent').textContent = acousticPercent + '%';
+            }, 500);
+
+            // Update verdict
+            const verdict = document.getElementById('profileVerdict');
+            let verdictText = '';
+
+            if (lexicalPercent > 70) {
+                verdictText = '📖 <strong>Lexical Processor:</strong> You rely heavily on words and semantic meaning. Like most AI models, you might miss subtle vocal cues. Try focusing more on tone!';
+            } else if (acousticPercent > 70) {
+                verdictText = '🎵 <strong>Acoustic Expert:</strong> You excel at reading tone and prosody! This is rare—you caught what most AI models miss. Your ears are sharper than GPT-4!';
+            } else {
+                verdictText = '⚖️ <strong>Balanced Processor:</strong> You use both words and tone effectively. This balanced approach often leads to the best emotion recognition. You\'re like Gemini 2.5 Pro!';
+            }
+
+            if (scores.user === scenarios.length) {
+                verdictText += '<br><br>🏆 <strong>Perfect Score!</strong> You beat all the AI models. You should be analyzing emotions, not them!';
+            } else if (scores.user >= Math.max(scores["GPT-4o"], scores["Gemini 2.5"], scores["Qwen-Omni"])) {
+                verdictText += '<br><br>🎉 <strong>You beat the AIs!</strong> Your emotional intelligence surpasses current state-of-the-art models.';
+            }
+
+            verdict.innerHTML = verdictText;
+        }
+
+        function restartGame() {
+            currentRound = 0;
+            userGuesses = [];
+            scores = { user: 0, "GPT-4o": 0, "Gemini 2.5": 0, "Qwen-Omni": 0 };
+
+            document.getElementById('resultsScreen').classList.remove('active');
+            document.getElementById('introScreen').classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
