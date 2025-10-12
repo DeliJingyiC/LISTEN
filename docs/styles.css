@@ -76,10 +76,36 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, #1e3a8a, #581c87);
     color: white;
-    padding: 6rem 0;
-    text-align: center;
+    padding: 4rem 0;
+}
+
+.hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.hero-content {
+    text-align: left;
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-chart {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    background: white;
+    padding: 1rem;
 }
 
 .hero h1 {
@@ -424,39 +450,32 @@ body {
 }
 
 /* Visualizations */
-.visualization-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 3rem;
+.visualization-single {
+    display: flex;
+    justify-content: center;
     margin-top: 3rem;
 }
 
-.viz-card {
+.viz-card-large {
     background: white;
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 900px;
 }
 
-.viz-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--text-dark);
-}
-
-.viz-image {
+.viz-image-large {
     width: 100%;
     height: auto;
     border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
 }
 
 .viz-caption {
     color: var(--text-light);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.8;
     text-align: left;
 }
 
@@ -757,12 +776,26 @@ footer a:hover {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
     .hero h1 {
         font-size: 2.5rem;
+        justify-content: center;
     }
 
     .subtitle {
         font-size: 1.2rem;
+    }
+
+    .hero-chart {
+        max-width: 100%;
     }
 
     .nav-links {

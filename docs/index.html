@@ -19,8 +19,8 @@
                 <a href="#overview">Overview</a>
                 <a href="#leaderboard">Leaderboard</a>
                 <a href="#visualizations">Results</a>
-                <a href="#examples">Examples</a>
                 <a href="#experiments">Experiments</a>
+                <a href="#examples">Examples</a>
                 <a href="#citation">Citation</a>
                 <a href="https://github.com/DeliJingyiC/LISTEN" target="_blank">
                     <i class="fab fa-github"></i> GitHub
@@ -30,24 +30,29 @@
     </nav>
 
     <header class="hero">
-        <div class="container">
-            <h1><i class="fas fa-headphones"></i> LISTEN</h1>
-            <p class="subtitle">Lexical vs. Acoustic Emotion Benchmark</p>
-            <p class="description">
-                A comprehensive benchmark for evaluating audio language models' ability to distinguish
-                between lexical (text-based) and acoustic (prosody-based) emotional cues in speech
-            </p>
-            <div class="hero-buttons">
-                <a href="https://github.com/DeliJingyiC/LISTEN" class="btn btn-primary" target="_blank">
-                    <i class="fab fa-github"></i> View on GitHub
-                </a>
-                <a href="https://huggingface.co/datasets/delijingyic/VibeCheck" class="btn btn-secondary"
-                    target="_blank">
-                    <i class="fas fa-database"></i> Dataset
-                </a>
-                <a href="#citation" class="btn btn-secondary">
-                    <i class="fas fa-quote-right"></i> Cite
-                </a>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1><i class="fas fa-headphones"></i> LISTEN</h1>
+                <p class="subtitle">Lexical vs. Acoustic Emotion Benchmark</p>
+                <p class="description">
+                    A comprehensive benchmark for evaluating audio language models' ability to distinguish
+                    between lexical (text-based) and acoustic (prosody-based) emotional cues in speech
+                </p>
+                <div class="hero-buttons">
+                    <a href="https://github.com/DeliJingyiC/LISTEN" class="btn btn-primary" target="_blank">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                    <a href="https://huggingface.co/datasets/delijingyic/VibeCheck" class="btn btn-secondary"
+                        target="_blank">
+                        <i class="fas fa-database"></i> Dataset
+                    </a>
+                    <a href="#citation" class="btn btn-secondary">
+                        <i class="fas fa-quote-right"></i> Cite
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img src="hero_radar.png" alt="Model Performance Across Modalities" class="hero-chart">
             </div>
         </div>
     </header>
@@ -133,7 +138,8 @@
                             <th data-sort="rank">Rank</th>
                             <th data-sort="model">Model</th>
                             <th data-sort="type">Type</th>
-                            <th data-sort="avg" class="sortable active">Overall Average <i class="fas fa-sort-down"></i></th>
+                            <th data-sort="avg" class="sortable active">Overall Average <i class="fas fa-sort-down"></i>
+                            </th>
                             <th data-sort="exp1_text">Neutral-Text (Text)</th>
                             <th data-sort="exp1_audio">Neutral-Text (Audio)</th>
                             <th data-sort="exp1_both">Neutral-Text (Both)</th>
@@ -155,12 +161,14 @@
             <div class="leaderboard-notes">
                 <h3>Notes:</h3>
                 <ul>
-                    <li><strong>Overall Average</strong>: Mean accuracy across all audio and text+audio results from the four experimental conditions (7 modalities total, excluding text-only)</li>
+                    <li><strong>Overall Average</strong>: Mean accuracy across all audio and text+audio results from the
+                        four experimental conditions (7 modalities total, excluding text-only)</li>
                     <li><strong>Weighted Accuracy</strong>: Accuracy weighted by class distribution</li>
                     <li><strong>UAR</strong>: Unweighted Average Recall (mean of per-class recalls)</li>
                     <li><strong>Macro F1</strong>: Unweighted mean of per-class F1 scores</li>
                     <li><strong>Micro F1</strong>: F1 score calculated globally across all classes</li>
-                    <li><strong>Baseline Models</strong>: Uniform Guess and Majority Guess are not ranked with other models</li>
+                    <li><strong>Baseline Models</strong>: Uniform Guess and Majority Guess are not ranked with other
+                        models</li>
                 </ul>
             </div>
         </div>
@@ -168,26 +176,75 @@
 
     <section id="visualizations" class="section">
         <div class="container">
-            <h2>Results Visualization</h2>
+            <h2>Performance Visualization</h2>
             <p class="section-description">
-                Visual analysis of model performance across different experimental conditions
+                Detailed model performance across different modalities and experimental conditions
             </p>
 
-            <div class="visualization-grid">
-                <div class="viz-card">
-                    <h3>Model Performance Comparison</h3>
-                    <img src="model_performance_radar.png"
-                        alt="Radar chart showing model performance across different conditions" class="viz-image">
-                    <p class="viz-caption">Radar chart comparing model performance across Neutral-Text, Emotion-Matched,
-                        Emotion-Mismatched, and Paralinguistic conditions. Gemini 2.5 Pro shows the most balanced
-                        performance.</p>
+            <div class="visualization-single">
+                <div class="viz-card-large">
+                    <img src="hero_radar.png"
+                        alt="Detailed radar chart showing model performance across all modalities" class="viz-image-large">
+                    <p class="viz-caption">Comprehensive comparison of model performance across seven modalities: Neutral-Text (Text/Audio), Emotion-Matched (Text/Audio), Emotion-Mismatched (Text/Audio), and Paralinguistic (Audio). Gemini 2.5 Pro demonstrates the most balanced performance, while Qwen3-Omni-30B excels in Emotion-Matched conditions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <section id="experiments" class="section">
+        <div class="container">
+            <h2>Experiment Details</h2>
+            <div class="experiment-details">
+                <div class="detail-card">
+                    <h3><span class="exp-number">1</span> Neutral-Text</h3>
+                    <p><strong>Task:</strong> Emotion recognition with neutral transcriptions</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Text</code>: Neutral text transcription only</li>
+                        <li><code>Audio</code>: Audio with emotional prosody</li>
+                        <li><code>Text+Audio</code>: Both modalities (neutral text + emotional audio)</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Assess if models can recognize emotion from prosody when text is
+                        neutral</p>
                 </div>
 
-                <div class="viz-card">
-                    <h3>Example Predictions</h3>
-                    <img src="LISTEN_example-2.png" alt="Example predictions from different models" class="viz-image">
-                    <p class="viz-caption">Sample predictions showing how different models handle various experimental
-                        conditions, highlighting common error patterns.</p>
+                <div class="detail-card">
+                    <h3><span class="exp-number">2</span> Emotion-Matched</h3>
+                    <p><strong>Task:</strong> Emotion recognition when lexical and acoustic cues agree</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Text</code>: Emotional text only</li>
+                        <li><code>Audio</code>: Audio with matching emotional prosody</li>
+                        <li><code>Text+Audio</code>: Both modalities with matching emotions</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Baseline performance when both modalities provide consistent emotional
+                        information</p>
+                </div>
+
+                <div class="detail-card">
+                    <h3><span class="exp-number">3</span> Emotion-Mismatched</h3>
+                    <p><strong>Task:</strong> Emotion recognition when lexical and acoustic cues conflict</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Text</code>: Emotional text (conflicting with audio emotion)</li>
+                        <li><code>Audio</code>: Audio with conflicting emotional prosody</li>
+                        <li><code>Text+Audio</code>: Both modalities with conflicting emotions</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Test whether models rely more on lexical or acoustic cues when they
+                        conflict</p>
+                </div>
+
+                <div class="detail-card">
+                    <h3><span class="exp-number">4</span> Paralinguistic</h3>
+                    <p><strong>Task:</strong> Emotion recognition from non-verbal vocalizations</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Audio</code>: Non-verbal sounds (laughter, sighs, gasps, etc.)</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Evaluate understanding of purely acoustic emotional cues without
+                        lexical content</p>
                 </div>
             </div>
         </div>
@@ -393,63 +450,6 @@
                             vocalizations.
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="experiments" class="section">
-        <div class="container">
-            <h2>Experiment Details</h2>
-            <div class="experiment-details">
-                <div class="detail-card">
-                    <h3><span class="exp-number">1</span> Neutral-Text</h3>
-                    <p><strong>Task:</strong> Emotion recognition with neutral transcriptions</p>
-                    <p><strong>Variants:</strong></p>
-                    <ul>
-                        <li><code>Text</code>: Neutral text transcription only</li>
-                        <li><code>Audio</code>: Audio with emotional prosody</li>
-                        <li><code>Text+Audio</code>: Both modalities (neutral text + emotional audio)</li>
-                    </ul>
-                    <p><strong>Purpose:</strong> Assess if models can recognize emotion from prosody when text is
-                        neutral</p>
-                </div>
-
-                <div class="detail-card">
-                    <h3><span class="exp-number">2</span> Emotion-Matched</h3>
-                    <p><strong>Task:</strong> Emotion recognition when lexical and acoustic cues agree</p>
-                    <p><strong>Variants:</strong></p>
-                    <ul>
-                        <li><code>Text</code>: Emotional text only</li>
-                        <li><code>Audio</code>: Audio with matching emotional prosody</li>
-                        <li><code>Text+Audio</code>: Both modalities with matching emotions</li>
-                    </ul>
-                    <p><strong>Purpose:</strong> Baseline performance when both modalities provide consistent emotional
-                        information</p>
-                </div>
-
-                <div class="detail-card">
-                    <h3><span class="exp-number">3</span> Emotion-Mismatched</h3>
-                    <p><strong>Task:</strong> Emotion recognition when lexical and acoustic cues conflict</p>
-                    <p><strong>Variants:</strong></p>
-                    <ul>
-                        <li><code>Text</code>: Emotional text (conflicting with audio emotion)</li>
-                        <li><code>Audio</code>: Audio with conflicting emotional prosody</li>
-                        <li><code>Text+Audio</code>: Both modalities with conflicting emotions</li>
-                    </ul>
-                    <p><strong>Purpose:</strong> Test whether models rely more on lexical or acoustic cues when they
-                        conflict</p>
-                </div>
-
-                <div class="detail-card">
-                    <h3><span class="exp-number">4</span> Paralinguistic</h3>
-                    <p><strong>Task:</strong> Emotion recognition from non-verbal vocalizations</p>
-                    <p><strong>Variants:</strong></p>
-                    <ul>
-                        <li><code>Audio</code>: Non-verbal sounds (laughter, sighs, gasps, etc.)</li>
-                    </ul>
-                    <p><strong>Purpose:</strong> Evaluate understanding of purely acoustic emotional cues without
-                        lexical content</p>
                 </div>
             </div>
         </div>

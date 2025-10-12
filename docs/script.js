@@ -125,21 +125,21 @@ let currentExperiment = 'all';
 // Only includes audio and text+audio results (excludes text-only)
 function calculateAverage(model, metric) {
     // Overall Average = mean of audio and text+audio across all 4 conditions (7 modalities total)
-    const experiments = ['exp1_audio', 'exp1_both', 
-                        'exp2_audio', 'exp2_both',
-                        'exp3_audio', 'exp3_both', 
-                        'exp4_audio'];
-    
+    const experiments = ['exp1_audio', 'exp1_both',
+        'exp2_audio', 'exp2_both',
+        'exp3_audio', 'exp3_both',
+        'exp4_audio'];
+
     let sum = 0;
     let count = 0;
-    
+
     experiments.forEach(exp => {
         if (model[exp] && model[exp] !== null && model[exp][metric] !== undefined && model[exp][metric] !== null) {
             sum += model[exp][metric];
             count++;
         }
     });
-    
+
     return count > 0 ? sum / count : 0;
 }
 
@@ -224,17 +224,17 @@ function getFilteredData() {
 function renderLeaderboard() {
     const tbody = document.getElementById('leaderboardBody');
     const data = getFilteredData();
-    
+
     // Apply search filter
     const searchTerm = document.getElementById('modelSearch').value.toLowerCase();
-    const filteredData = searchTerm 
+    const filteredData = searchTerm
         ? data.filter(model => model.model.toLowerCase().includes(searchTerm))
         : data;
-    
+
     // Separate baseline models from ranked models
     const rankedModels = filteredData.filter(model => model.type !== 'baseline');
     const baselineModels = filteredData.filter(model => model.type === 'baseline');
-    
+
     // Render ranked models
     const rankedHTML = rankedModels.map((model, index) => {
         const rank = index + 1;
@@ -257,7 +257,7 @@ function renderLeaderboard() {
             </tr>
         `;
     }).join('');
-    
+
     // Render baseline models without rank
     const baselineHTML = baselineModels.map((model) => {
         return `
@@ -279,7 +279,7 @@ function renderLeaderboard() {
             </tr>
         `;
     }).join('');
-    
+
     tbody.innerHTML = rankedHTML + baselineHTML;
 
     // Update sort indicators
