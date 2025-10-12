@@ -37,6 +37,7 @@ scripts/results/
 results/
 *.json
 !requirements.txt
+extract_leaderboard_data.py
 
 # Logs
 *.log
