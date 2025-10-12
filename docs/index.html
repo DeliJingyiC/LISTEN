@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LISTEN: Lexical vs. Acoustic Emotion Benchmark</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-headphones"></i> LISTEN
+            </div>
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#leaderboard">Leaderboard</a>
+                <a href="#experiments">Experiments</a>
+                <a href="#citation">Citation</a>
+                <a href="https://github.com/DeliJingyiC/LISTEN" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1><i class="fas fa-headphones"></i> LISTEN</h1>
+            <p class="subtitle">Lexical vs. Acoustic Emotion Benchmark</p>
+            <p class="description">
+                A comprehensive benchmark for evaluating audio language models' ability to distinguish
+                between lexical (text-based) and acoustic (prosody-based) emotional cues in speech
+            </p>
+            <div class="hero-buttons">
+                <a href="https://github.com/DeliJingyiC/LISTEN" class="btn btn-primary" target="_blank">
+                    <i class="fab fa-github"></i> View on GitHub
+                </a>
+                <a href="https://huggingface.co/datasets/delijingyic/VibeCheck" class="btn btn-secondary"
+                    target="_blank">
+                    <i class="fas fa-database"></i> Dataset
+                </a>
+                <a href="#citation" class="btn btn-secondary">
+                    <i class="fas fa-quote-right"></i> Cite
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="overview" class="section">
+        <div class="container">
+            <h2>Overview</h2>
+            <div class="overview-content">
+                <p>
+                    <strong>LISTEN</strong> is a novel benchmark designed to evaluate multimodal audio-language models
+                    on their ability to understand and distinguish between lexical and acoustic emotional cues in
+                    speech.
+                    The benchmark consists of four main experiment types:
+                </p>
+                <div class="experiment-cards">
+                    <div class="card">
+                        <div class="card-icon">1</div>
+                        <h3>Neutral-Text</h3>
+                        <p>Emotion recognition with neutral transcriptions across modalities</p>
+                        <span class="badge">3 variants</span>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">2</div>
+                        <h3>Emotion-Matched</h3>
+                        <p>Lexical and acoustic cues convey the same emotion</p>
+                        <span class="badge">3 variants</span>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">3</div>
+                        <h3>Emotion-Mismatched</h3>
+                        <p>Lexical and acoustic cues convey conflicting emotions</p>
+                        <span class="badge">3 variants</span>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">4</div>
+                        <h3>Paralinguistic</h3>
+                        <p>Non-verbal vocalizations without lexical content</p>
+                        <span class="badge">1 variant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="leaderboard" class="section section-gray">
+        <div class="container">
+            <h2>Leaderboard</h2>
+            <p class="section-description">
+                Performance of state-of-the-art audio-language models on the LISTEN benchmark.
+                Click on column headers to sort.
+            </p>
+
+            <div class="leaderboard-controls">
+                <div class="filter-group">
+                    <label>Filter by Experiment:</label>
+                    <select id="experimentFilter">
+                        <option value="all">All Experiments</option>
+                        <option value="exp1">Experiment 1 (Neutral-Text)</option>
+                        <option value="exp2">Experiment 2 (Emotion-Matched)</option>
+                        <option value="exp3">Experiment 3 (Emotion-Mismatched)</option>
+                        <option value="exp4">Experiment 4 (Paralinguistic)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Filter by Metric:</label>
+                    <select id="metricFilter">
+                        <option value="accuracy">Accuracy</option>
+                        <option value="weighted_accuracy">Weighted Accuracy</option>
+                        <option value="uar">UAR</option>
+                        <option value="macro_f1">Macro F1</option>
+                        <option value="micro_f1">Micro F1</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="modelSearch" placeholder="Search models...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="leaderboardTable" class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="rank">Rank</th>
+                            <th data-sort="model">Model</th>
+                            <th data-sort="type">Type</th>
+                            <th data-sort="avg" class="sortable active">Average <i class="fas fa-sort-down"></i></th>
+                            <th data-sort="exp1_text">Exp 1 (Text)</th>
+                            <th data-sort="exp1_audio">Exp 1 (Audio)</th>
+                            <th data-sort="exp1_both">Exp 1 (Both)</th>
+                            <th data-sort="exp2_text">Exp 2 (Text)</th>
+                            <th data-sort="exp2_audio">Exp 2 (Audio)</th>
+                            <th data-sort="exp2_both">Exp 2 (Both)</th>
+                            <th data-sort="exp3_text">Exp 3 (Text)</th>
+                            <th data-sort="exp3_audio">Exp 3 (Audio)</th>
+                            <th data-sort="exp3_both">Exp 3 (Both)</th>
+                            <th data-sort="exp4_audio">Exp 4 (Audio)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="leaderboard-notes">
+                <h3>Notes:</h3>
+                <ul>
+                    <li><strong>Average</strong>: Mean performance across all experiment variants</li>
+                    <li><strong>Weighted Accuracy</strong>: Accuracy weighted by class distribution</li>
+                    <li><strong>UAR</strong>: Unweighted Average Recall (mean of per-class recalls)</li>
+                    <li><strong>Macro F1</strong>: Unweighted mean of per-class F1 scores</li>
+                    <li><strong>Micro F1</strong>: F1 score calculated globally across all classes</li>
+                    <li><strong>Chance Baseline</strong>: Prediction marginal distribution baseline</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="experiments" class="section">
+        <div class="container">
+            <h2>Experiment Details</h2>
+            <div class="experiment-details">
+                <div class="detail-card">
+                    <h3><span class="exp-number">1</span> Neutral-Text</h3>
+                    <p><strong>Task:</strong> Emotion recognition with neutral transcriptions</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Text</code>: Neutral text transcription only</li>
+                        <li><code>Audio</code>: Audio with emotional prosody</li>
+                        <li><code>Text+Audio</code>: Both modalities (neutral text + emotional audio)</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Assess if models can recognize emotion from prosody when text is
+                        neutral</p>
+                </div>
+
+                <div class="detail-card">
+                    <h3><span class="exp-number">2</span> Emotion-Matched</h3>
+                    <p><strong>Task:</strong> Emotion recognition when lexical and acoustic cues agree</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Text</code>: Emotional text only</li>
+                        <li><code>Audio</code>: Audio with matching emotional prosody</li>
+                        <li><code>Text+Audio</code>: Both modalities with matching emotions</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Baseline performance when both modalities provide consistent emotional
+                        information</p>
+                </div>
+
+                <div class="detail-card">
+                    <h3><span class="exp-number">3</span> Emotion-Mismatched</h3>
+                    <p><strong>Task:</strong> Emotion recognition when lexical and acoustic cues conflict</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Text</code>: Emotional text (conflicting with audio emotion)</li>
+                        <li><code>Audio</code>: Audio with conflicting emotional prosody</li>
+                        <li><code>Text+Audio</code>: Both modalities with conflicting emotions</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Test whether models rely more on lexical or acoustic cues when they
+                        conflict</p>
+                </div>
+
+                <div class="detail-card">
+                    <h3><span class="exp-number">4</span> Paralinguistic</h3>
+                    <p><strong>Task:</strong> Emotion recognition from non-verbal vocalizations</p>
+                    <p><strong>Variants:</strong></p>
+                    <ul>
+                        <li><code>Audio</code>: Non-verbal sounds (laughter, sighs, gasps, etc.)</li>
+                    </ul>
+                    <p><strong>Purpose:</strong> Evaluate understanding of purely acoustic emotional cues without
+                        lexical content</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="citation" class="section section-gray">
+        <div class="container">
+            <h2>Citation</h2>
+            <p>If you use LISTEN in your research, please cite:</p>
+            <div class="citation-box">
+                <pre><code>@misc{deli2025listen,
+  title={LISTEN: Lexical vs. Acoustic Emotion Benchmark for Audio Language Models},
+  author={Deli, Jingyi C.},
+  year={2025},
+  publisher={GitHub},
+  howpublished={\url{https://github.com/DeliJingyiC/LISTEN}},
+  note={Dataset available at: \url{https://huggingface.co/datasets/delijingyic/VibeCheck}}
+}</code></pre>
+                <button class="copy-btn" onclick="copyBibtex()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 LISTEN Benchmark. All rights reserved.</p>
+            <p>
+                <a href="https://github.com/DeliJingyiC/LISTEN" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://huggingface.co/datasets/delijingyic/VibeCheck" target="_blank">
+                    <i class="fas fa-database"></i> Dataset
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

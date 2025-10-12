@@ -2,6 +2,8 @@
 
 Official repository for the paper: **"Do Audio LLMs Really LISTEN, or Just Transcribe? Measuring Lexical vs. Acoustic Emotion Cues Reliance"**
 
+📊 **[View Leaderboard](https://delijingyic.github.io/LISTEN/)** | 🤗 **[Dataset](https://huggingface.co/datasets/VibeCheck1/LISTEN_full)** | 📄 **[Paper](#citation)**
+
 ## Overview
 
 LISTEN is a comprehensive benchmark for evaluating whether audio-capable large language models (LLMs) truly understand acoustic emotion cues or primarily rely on lexical (text-based) information when performing emotion recognition tasks.
