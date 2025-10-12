@@ -2,7 +2,7 @@
 
 Official repository for the paper: **"Do Audio LLMs Really LISTEN, or Just Transcribe? Measuring Lexical vs. Acoustic Emotion Cues Reliance"**
 
-📊 **[View Leaderboard](https://delijingyic.github.io/LISTEN/)** | 🤗 **[Dataset](https://huggingface.co/datasets/VibeCheck1/LISTEN_full)** | 📄 **[Paper](#citation)**
+📊 **[View Leaderboard](https://delijingyic.github.io/LISTEN-website/)** | 🤗 **[Dataset](https://huggingface.co/datasets/VibeCheck1/LISTEN_full)** | 📄 **[Paper](#citation)**
 
 ## Overview
 
