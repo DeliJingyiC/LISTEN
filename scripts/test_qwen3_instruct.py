@@ -18,7 +18,7 @@ import argparse
 from datetime import datetime
 import glob
 import shutil
-from evaluation_utils import calculate_comprehensive_metrics, print_comprehensive_results
+from evaluation_utils import calculate_comprehensive_metrics, print_comprehensive_results, letter_instruction, extract_letter
 
 # Set HuggingFace token for dataset access
 os.environ['HUGGINGFACE_HUB_TOKEN'] = 'fill in your token'
@@ -283,6 +283,7 @@ def test_single_experiment(experiment_type, input_mode="text", model_kind="qwen3
         
         # Create clean prompt with randomized choices
         choices_text = "\n".join([f"{chr(65+i)}. {choice}" for i, choice in enumerate(randomized_sample['choices'])])
+        letter_line = letter_instruction(len(randomized_sample['choices']))
         
         # Create prompt for text-based input (Qwen3-Instruct is text-only)
         prompt = f"""Read the transcription and classify the emotion.
@@ -291,7 +292,7 @@ def test_single_experiment(experiment_type, input_mode="text", model_kind="qwen3
 
 {choices_text}
 
-Respond with only the letter (A, B, C, D, E, F, G, H):"""
+{letter_line}"""
         
         # Store result data
         result = {
@@ -337,11 +338,7 @@ Respond with only the letter (A, B, C, D, E, F, G, H):"""
                         assistant_response = full_response.strip()
                     
                     # Extract letter
-                    predicted_letter = None
-                    for char in assistant_response:
-                        if char in 'ABCDEFGH':
-                            predicted_letter = char
-                            break
+                    predicted_letter = extract_letter(assistant_response, len(randomized_sample['choices']))
                     
                     result['predicted_letter'] = predicted_letter
                     
