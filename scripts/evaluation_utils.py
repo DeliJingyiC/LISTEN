@@ -10,6 +10,35 @@ from collections import Counter
 from sklearn.metrics import accuracy_score, f1_score, balanced_accuracy_score
 
 
+def letter_instruction(n_choices):
+    """Build the 'Respond with only the letter (...)' instruction for a prompt.
+
+    The letter range is derived from the number of choices actually shown, so a
+    5-way prompt says "A, B, C, D, E" and a 10-way prompt (e.g. the expanded
+    choice set used in experiments 3A/3B/3C) says "A, ..., J". Hardcoding
+    "A, B, C, D, E, F, G, H" told the model to answer within A-H even when it
+    was shown options up to J, biasing it away from the later choices.
+    """
+    letters = ", ".join(chr(65 + i) for i in range(n_choices))
+    return f"Respond with only the letter ({letters}):"
+
+
+def extract_letter(response, n_choices):
+    """Return the first valid answer letter in ``response``, else ``None``.
+
+    The valid set is A .. chr(64 + n_choices), so a 10-way question accepts I
+    and J. The previous ``if char in 'ABCDEFGH'`` filter silently discarded I/J
+    predictions on the 10-way experiments, scoring a correct answer as a miss.
+    """
+    if not isinstance(response, str):
+        return None
+    valid = {chr(65 + i) for i in range(n_choices)}
+    for char in response.upper():
+        if char in valid:
+            return char
+    return None
+
+
 def normalize_emotion_labels(df):
     """
     Normalize emotion labels from different datasets to standard emotion categories.
@@ -120,9 +149,14 @@ def calculate_comprehensive_metrics(results):
     macro_f1 = f1_score(y_true, y_pred, average="macro", zero_division=0)
     micro_f1 = f1_score(y_true, y_pred, average="micro", zero_division=0)
     
-    per_class_acc = df_normalized.groupby("ground_truth").apply(
-        lambda g: (g["ground_truth"] == g["prediction"]).mean()
-    ).to_dict()
+    per_class_acc = (
+        df_normalized.assign(
+            _correct=df_normalized["ground_truth"] == df_normalized["prediction"]
+        )
+        .groupby("ground_truth")["_correct"]
+        .mean()
+        .to_dict()
+    )
     
     # Calculate chance baseline (prediction marginal distribution baseline)
     chance_metrics = calculate_chance_baseline(df_normalized)

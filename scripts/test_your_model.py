@@ -28,7 +28,7 @@ The script automatically handles:
 import json, os, torch, numpy as np, random, hashlib, argparse
 from datetime import datetime
 from datasets import load_dataset
-from evaluation_utils import calculate_comprehensive_metrics, print_comprehensive_results
+from evaluation_utils import calculate_comprehensive_metrics, print_comprehensive_results, letter_instruction, extract_letter
 
 # STEP 1: Set your HuggingFace token
 os.environ['HUGGINGFACE_HUB_TOKEN'] = 'your_token_here'
@@ -236,7 +236,7 @@ def test_experiment(exp_type, input_mode, model_name="YourModel", resume=True):
         
         # Create prompt
         choices_text = "\n".join([f"{chr(65+i)}. {c}" for i, c in enumerate(randomized['choices'])])
-        prompt = f"{randomized['question']}\n\n{choices_text}\n\nRespond with only the letter (A, B, C, etc.):"
+        prompt = f"{randomized['question']}\n\n{choices_text}\n\n{letter_instruction(len(randomized['choices']))}"
         
         result = {
             'sample_id': sample['id'],
@@ -259,10 +259,7 @@ def test_experiment(exp_type, input_mode, model_name="YourModel", resume=True):
             # Extract letter from response
             predicted = None
             if isinstance(response, str):
-                for char in response.upper():
-                    if char in 'ABCDEFGH':
-                        predicted = char
-                        break
+                predicted = extract_letter(response, len(randomized['choices']))
             
             result['predicted_letter'] = predicted
             if predicted == expected:
@@ -351,12 +348,12 @@ def main():
     else:
         exps = all_exps
     
-    print(f"\nTesting {args.model_name} on LISTEN Benchmark")
+    print(f"\nTesting {args.model} on LISTEN Benchmark")
     print(f"Experiments: {', '.join([e for e, _ in exps])}")
     
     # Run experiments
     for exp_type, input_mode in exps:
-        test_experiment(exp_type, input_mode, args.model_name, resume=not args.no_resume)
+        test_experiment(exp_type, input_mode, args.model, resume=not args.no_resume)
     
     print("\n" + "="*80)
     print("All experiments complete!")

@@ -19,7 +19,7 @@ from datetime import datetime
 
 # Import the required utility function
 from qwen_omni_utils import process_mm_info
-from evaluation_utils import calculate_comprehensive_metrics, print_comprehensive_results
+from evaluation_utils import calculate_comprehensive_metrics, print_comprehensive_results, letter_instruction, extract_letter
 
 # Set HuggingFace token for dataset access
 os.environ['HUGGINGFACE_HUB_TOKEN'] = 'fill in your token'
@@ -463,6 +463,7 @@ def test_single_experiment(experiment_type, input_mode="audio", model_kind="qwen
         
         # Create clean prompt with randomized choices
         choices_text = "\n".join([f"{chr(65+i)}. {choice}" for i, choice in enumerate(randomized_sample['choices'])])
+        letter_line = letter_instruction(len(randomized_sample['choices']))
         
         # Create prompt based on input mode
         if input_mode == "audio":
@@ -473,7 +474,7 @@ def test_single_experiment(experiment_type, input_mode="audio", model_kind="qwen
 
 {choices_text}
 
-Respond with only the letter (A, B, C, D, E, F, G, H):"""
+{letter_line}"""
         elif input_mode == "text":
             # Text-based prompt for experiments 2A, 3A
             prompt = f"""Read the transcription and classify the emotion.
@@ -482,7 +483,7 @@ Respond with only the letter (A, B, C, D, E, F, G, H):"""
 
 {choices_text}
 
-Respond with only the letter (A, B, C, D, E, F, G, H):"""
+{letter_line}"""
         elif input_mode == "audio_and_text":
             # Audio and text prompt for experiments 2C, 3C
             prompt = f"""Listen to the audio and read the transcription, then classify the emotion.
@@ -491,7 +492,7 @@ Respond with only the letter (A, B, C, D, E, F, G, H):"""
 
 {choices_text}
 
-Respond with only the letter (A, B, C, D, E, F, G, H):"""
+{letter_line}"""
         else:
             raise ValueError(f"Unknown input_mode: {input_mode}")
         
@@ -544,11 +545,7 @@ Respond with only the letter (A, B, C, D, E, F, G, H):"""
                         assistant_response = full_response.strip()
                     
                     # Extract letter
-                    predicted_letter = None
-                    for char in assistant_response:
-                        if char in 'ABCDEFGH':
-                            predicted_letter = char
-                            break
+                    predicted_letter = extract_letter(assistant_response, len(randomized_sample['choices']))
                     
                     result['predicted_letter'] = predicted_letter
                     
@@ -603,11 +600,7 @@ Respond with only the letter (A, B, C, D, E, F, G, H):"""
                         assistant_response = full_response.strip()
                     
                     # Extract letter
-                    predicted_letter = None
-                    for char in assistant_response:
-                        if char in 'ABCDEFGH':
-                            predicted_letter = char
-                            break
+                    predicted_letter = extract_letter(assistant_response, len(randomized_sample['choices']))
                     
                     result['predicted_letter'] = predicted_letter
                     
@@ -653,11 +646,7 @@ Respond with only the letter (A, B, C, D, E, F, G, H):"""
                             assistant_response = full_response.strip()
                         
                         # Extract letter
-                        predicted_letter = None
-                        for char in assistant_response:
-                            if char in 'ABCDEFGH':
-                                predicted_letter = char
-                                break
+                        predicted_letter = extract_letter(assistant_response, len(randomized_sample['choices']))
                         
                         result['predicted_letter'] = predicted_letter
                         
